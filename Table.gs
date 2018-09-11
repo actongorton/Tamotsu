@@ -189,8 +189,16 @@ var createTable_ = function() {
       return this.idColumnIndex_memo_;
     },
     
-    updateID: function(row, id){
-      this.sheet().getRange(row, 1).setValue(id);
+    updateID: function(row_index, id){
+      return this.sheet().getRange(row_index, 1).setValue(id);
+    },
+    
+    setDataValidation: function(id, column_name, dv){
+      var row_index = this.find(id)['row_'];
+      var col_index = this.columnIndexOf(column_name);
+      console.log('row_index:', row_index);
+      console.log('col_index:', col_index);
+      return this.sheet().getRange(row_index, col_index + 1).setDataValidation(dv);
     }
   });
   
