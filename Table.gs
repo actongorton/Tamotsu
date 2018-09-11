@@ -11,14 +11,14 @@ var createTable_ = function() {
   };
   
   Object.assign(Table, {
-  
+    
     sheet: function() {
       if (!this.sheet_memo_) {
         this.sheet_memo_ = ss_.getSheetByName(this.sheetName);
       }
       return this.sheet_memo_;
     },
-  
+    
     first: function() {
       var values = this.allValues();
       if (values.length === 0) return null;
@@ -98,7 +98,7 @@ var createTable_ = function() {
       if (index === -1) throw 'Invalid column given!';
       return index;
     },
-  
+    
     columnABCFor: function(column) {
       return indexToABC(this.columnIndexOf(column) + 1);
     },
@@ -165,11 +165,12 @@ var createTable_ = function() {
     },
     
     withNextId: function(callback) {
-	  var ids = this.idValues();
+      var ids = this.idValues();
       var nextId = ids.length > 0 ? Math.max.apply(null, ids) + 1 : 1;
       callback(nextId);
     },
     
+    // returns ids as an array list
     idValues: function() {
       var idValues = [];
       var that = this;
@@ -187,6 +188,10 @@ var createTable_ = function() {
       }
       return this.idColumnIndex_memo_;
     },
+    
+    updateID: function(row, id){
+      this.sheet().getRange(row, 1).setValue(id);
+    }
   });
   
   Object.defineProperties(Table.prototype, {
