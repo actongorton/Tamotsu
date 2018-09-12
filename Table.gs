@@ -32,13 +32,18 @@ var createTable_ = function() {
     },
     
     find: function(id) {
+      /*
+        pass: the unique id from the # column
+        return: object dictionary, e.g. `{row_=<row index>, 'column name'='cell value', n...}`
+      */
       var values = this.allValues();
       for (var i = 0; i < values.length; i++) {
         if (values[i][this.idColumnIndex()] === id) {
           return new this(this.objectFrom(values[i]), { row_: i + 2 });
         }
       }
-      throw 'Record not found [id=' + id + ']';
+      // throw 'Record not found [id=' + id + ']';
+      return false;
     },
     
     all: function() {
@@ -159,7 +164,7 @@ var createTable_ = function() {
       }
       return false;
     },
-    
+
     destroy: function(record) {
       this.sheet().deleteRow(record.row_);
     },
@@ -196,8 +201,6 @@ var createTable_ = function() {
     setDataValidation: function(id, column_name, dv){
       var row_index = this.find(id)['row_'];
       var col_index = this.columnIndexOf(column_name);
-      console.log('row_index:', row_index);
-      console.log('col_index:', col_index);
       return this.sheet().getRange(row_index, col_index + 1).setDataValidation(dv);
     }
   });
@@ -221,7 +224,7 @@ var createTable_ = function() {
     }},
     isNewRecord: { value: function() {
       return !this.row_;
-    }},
+    }}
   });
   
   Table.define = function(classProps, instanceProps) {
